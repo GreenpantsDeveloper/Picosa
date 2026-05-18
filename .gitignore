@@ -1,0 +1,57 @@
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Shell configuration (user-specific)
+.bash_profile
+.bashrc
+.profile
+.zprofile
+.zshrc
+
+# Editor & IDE settings (user-specific workspaces)
+.idea/
+.vscode/
+.claude/
+.pi/
+
+# Editor/IDE config files
+.mcp.json
+.ripgreprc
+.idea
+.vscode
+
+# Git (user-specific)
+.gitconfig
+
+# IDE generated
+*.swp
+*.swo
+*~
+*.pyc
+__pycache__/
+node_modules/
+dist/
+build/
+
+# Docker
+.docker/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehdaemon/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

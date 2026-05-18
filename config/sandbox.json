@@ -1,0 +1,25 @@
+{
+  "enabled": true,
+  "allowBrowserProcess": true,
+  "network": {
+    "allowLocalBinding": true,
+    "allowAllUnixSockets": false,
+    "allowedDomains": [
+      "localhost",
+      "127.0.0.1",
+      "html.duckduckgo.com",
+      "qwant.com",
+      "*.npmjs.org",
+      "*.pypi.org",
+      "*.github.com",
+      "raw.githubusercontent.com"
+    ],
+    "deniedDomains": []
+  },
+  "filesystem": {
+    "denyRead": [".env", "*.pem", "*.key"],
+    "allowRead": ["/workspace", "/tmp", "/root/.pi", "/usr/local/lib/node_modules/*"],
+    "allowWrite": ["/workspace", "/tmp", "/root/.pi"],
+    "denyWrite": [".env", "*.pem", "*.key", "/config", ".gitconfig", "/usr/sbin/iptables*", "/usr/sbin/ip6tables*", "/usr/sbin/nft*", "/usr/sbin/xtables*", "/sbin/iptables*", "/sbin/ip6tables*", "/proc/sys/net/*", "/etc/iptables*", "/etc/nftables*"]
+  }
+}

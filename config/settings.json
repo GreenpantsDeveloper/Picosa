@@ -1,0 +1,7 @@
+{
+  "defaultProvider": "ollama",
+  "defaultModel": "${OLLAMA_DEFAULT_MODEL}",
+  "enableInstallTelemetry": false,
+  "quietStartup": false,
+  "packages": ["npm:pi-sandbox"]
+}
