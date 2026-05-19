@@ -10,6 +10,22 @@ for f in /config/*.json; do
     [ -f "$f" ] && cp "$f" "$PI_CONFIG_DIR/$(basename "$f")"
 done
 
+# Select the correct APPEND_SYSTEM for the current mode
+# Prefers mode-specific files; falls back to a generic APPEND_SYSTEM.md for backward compat
+if [ "${PRIVATE_MODE:-0}" = "1" ]; then
+    if [ -f /config/APPEND_SYSTEM.private.md ]; then
+        cp /config/APPEND_SYSTEM.private.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
+    elif [ -f /config/APPEND_SYSTEM.md ]; then
+        cp /config/APPEND_SYSTEM.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
+    fi
+else
+    if [ -f /config/APPEND_SYSTEM.public.md ]; then
+        cp /config/APPEND_SYSTEM.public.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
+    elif [ -f /config/APPEND_SYSTEM.md ]; then
+        cp /config/APPEND_SYSTEM.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
+    fi
+fi
+
 # Inject environment variables into models.json template
 export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://host.docker.internal:11434/v1}"
 export OLLAMA_DEFAULT_MODEL="${OLLAMA_DEFAULT_MODEL}"
@@ -62,9 +78,9 @@ if [ "${PRIVATE_MODE:-0}" = "1" ]; then
     rm -rf /usr/lib/x86_64-linux-gnu/xtables 2>/dev/null || true
     rm -rf /usr/lib/aarch64-linux-gnu/xtables 2>/dev/null || true
 
-    echo "[picosa] 🔒 Firewall active — iptables binaries removed"
+    echo "🔒 Picosa in private/offline mode — Firewall active & iptables binaries removed"
 else
-    echo "[picosa] 🌐 Open mode — full network access"
+    echo "🌐 Picosa in public/online mode — sandbox-restricted network access allowed"
 fi
 
 # Execute pi with any passed arguments

@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCKERFILE="$SCRIPT_DIR/Dockerfile"
 IMAGE_NAME="picosa:latest"
-PRIVATE_MODE=0
+PRIVATE_MODE=1
 
 [ -f "$SCRIPT_DIR/.env" ] && set -a && . "$SCRIPT_DIR/.env" && set +a
 
@@ -18,17 +18,21 @@ Usage: picosa.sh [OPTIONS] [PI_ARGS...]
 Containerized pi.dev sandbox with optional network isolation (picosa).
 
 Runs pi in a Docker container with filesystem/process sandboxing
-via pi-sandbox. By default, outbound internet access is preserved.
-With --private, all external network access is blocked while LAN
-access (for Ollama, etc.) is kept.
+via pi-sandbox. By default (no flags), a fully offline mode is used.
+With online/public flags, external internet access is preserved.
 
 The current directory is mounted at /workspace/<session-dir>/ (pi's working directory).
 
 Options:
-  --private          Enable private/offline mode — blocks all external
-                     network access. LAN + Docker host access preserved.
-  --build            Force-rebuild the picosa image.
-  --help, -h         Show this help.
+  Offline mode (default):
+    --private, --offline, --closed, --lan
+                           Block all external network access.
+                           LAN + Docker host access preserved.
+  Online mode:
+    --public, --online, --open, --web
+                           Allow sandbox-restricted internet access.
+  --build                  Force-rebuild the picosa image.
+  --help, -h              Show this help.
 
 Environment variables:
   OLLAMA_BASE_URL       Override the Ollama API endpoint inside the container.
@@ -37,8 +41,8 @@ Environment variables:
 
 Shell shortcuts: add to ~/.bashrc and/or ~/.zshrc:
 
-  picosa() { ${SCRIPT_DIR}/picosa.sh --private "\$@"; }
-  picosaweb() { ${SCRIPT_DIR}/picosa.sh "\$@"; }
+  picosa() { ${SCRIPT_DIR}/picosa.sh "\$@"; }
+  picosaweb() { ${SCRIPT_DIR}/picosa.sh --web "\$@"; }
 
 EOF
 }
@@ -52,8 +56,12 @@ ensure_image() {
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --private)
+        --private|--offline|--closed|--lan)
             PRIVATE_MODE=1
+            shift
+            ;;
+        --public|--online|--open|--web)
+            PRIVATE_MODE=0
             shift
             ;;
         --build)

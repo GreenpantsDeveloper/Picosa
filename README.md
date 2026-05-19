@@ -52,8 +52,8 @@ OLLAMA_DEFAULT_MODEL=gemma4:e4b
 
 4. Make `picosa` easy to run in the terminal by appending the shell script to your `.zshrc` or `.bashrc` file as an alias:
 ```sh
-picosa() { /your/path/to/repo/Picosa/picosa.sh --private "$@"; }
-picosaweb() { /your/path/to/repo/Picosa/picosa.sh "$@"; }
+picosa() { /your/path/to/repo/Picosa/picosa.sh "\$@"; }
+picosaweb() { /your/path/to/repo/Picosa/picosa.sh --web "\$@"; }
 ```
 
 Restart the terminal (or run e.g. `source ~/.zshrc`) and that's it! You can now run `picosa` for an offline agent, or `picosaweb` for a network-sandboxed variant, in any repository on your machine 🎉
@@ -65,11 +65,11 @@ cd some/path/to/your/repository
 
 # Run a fully offline pi agent with only LAN-access for Ollama with either:
 picosa  # or
-./picosa.sh --private
+./picosa.sh
 
 # Run a network-sandboxed pi agent that can e.g. search the internet with either:
 picosaweb  # or
-./picosa.sh
+./picosa.sh --online
 
 # Force rebuild the container image if need be:
 ./picosa.sh --build
