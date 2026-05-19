@@ -13,14 +13,14 @@ done
 # Select the correct APPEND_SYSTEM for the current mode
 # Prefers mode-specific files; falls back to a generic APPEND_SYSTEM.md for backward compat
 if [ "${PRIVATE_MODE:-0}" = "1" ]; then
-    if [ -f /config/APPEND_SYSTEM.private.md ]; then
-        cp /config/APPEND_SYSTEM.private.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
+    if [ -f /config/APPEND_SYSTEM.offline.md ]; then
+        cp /config/APPEND_SYSTEM.offline.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
     elif [ -f /config/APPEND_SYSTEM.md ]; then
         cp /config/APPEND_SYSTEM.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
     fi
 else
-    if [ -f /config/APPEND_SYSTEM.public.md ]; then
-        cp /config/APPEND_SYSTEM.public.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
+    if [ -f /config/APPEND_SYSTEM.online.md ]; then
+        cp /config/APPEND_SYSTEM.online.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
     elif [ -f /config/APPEND_SYSTEM.md ]; then
         cp /config/APPEND_SYSTEM.md "$PI_CONFIG_DIR/APPEND_SYSTEM.md"
     fi
@@ -77,10 +77,6 @@ if [ "${PRIVATE_MODE:-0}" = "1" ]; then
 
     rm -rf /usr/lib/x86_64-linux-gnu/xtables 2>/dev/null || true
     rm -rf /usr/lib/aarch64-linux-gnu/xtables 2>/dev/null || true
-
-    echo "🔒 Picosa in private/offline mode — Firewall active & iptables binaries removed"
-else
-    echo "🌐 Picosa in public/online mode — sandbox-restricted network access allowed"
 fi
 
 # Execute pi with any passed arguments

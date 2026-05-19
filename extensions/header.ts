@@ -11,6 +11,21 @@ export default function (pi: ExtensionAPI) {
             theme.fg("success", "Your AI coding assistant ") +
               theme.fg("muted", `(pi ${VERSION})`),
             "",
+            (() => {
+              const mode = process.env.PRIVATE_MODE;
+              if (mode === "1") {
+                return (
+                  theme.fg("accent", "🔒 Offline mode") +
+                  theme.fg("muted", " — firewall active & iptables binaries removed")
+                );
+              } else {
+                return (
+                  theme.fg("warning", "🌐 Online mode") +
+                  theme.fg("muted", " — sandbox-restricted network access allowed")
+                );
+              }
+            })(),
+            "",
             theme.fg("muted", "You could:"),
             theme.fg("muted", "- ask me what I can do for you;"),
             theme.fg("muted", "- let me write a skill, implement a feature branch or identify security risks;"),
