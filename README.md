@@ -1,7 +1,13 @@
-# Picosa
-`picosa` is a local **pi** coding agent conveniently **co**ntainerized and safely **sa**ndboxed.
+<p align="center">
+  <img src="images/banner.png" alt="Picosa — a containerized, sandboxed pi coding agent" width="800">
+</p>
 
-It is able to run the `pi` coding agent **completely offline**, as well as sandboxed to allow specific web requests.
+<p align="center">Made with ♥ by <a href="https://blog.greenpants.net">Greenpants</a></p>
+
+# About Picosa
+Local **pi** coding agent conveniently **co**ntainerized and safely **sa**ndboxed.
+
+This lets you run the `pi` coding agent **completely offline** in a simple container, or sandboxed to only allow requests to specific domains.
 
 ## Tell me more!
 Picosa wraps the [pi.dev](https://pi.dev) coding agent in a hardened Docker container with filesystem isolation and full network control. Run it from any repository and you get a fully functional `pi` agent with Ollama back-end that can only read/write to safe files in this repository.
@@ -13,8 +19,6 @@ You shouldn't want a local AI agent able to go rogue, exfiltrating secrets, maki
 It might be for your use-case, but `picosa` is particularly portable and secure by running directly inside a container. It also strengthens the security with a second layer of defense, with iptables binaries removed & read-only (or simply no) access to sensitive files whenever the agent is run. You can sit back and let your agent do its thing, without having to worry about (dis)allowing each action. If you start `picosa` fully privately, you can be certain that your agent's requests can never reach the public internet.
 
 With `picosa`, your agents are simple, secure, and safe to use on any repository.
-
----
 
 ## Getting started
 ### Prerequisites
@@ -28,7 +32,7 @@ This repository was tested on MacOS (this container, as well as the Ollama serve
 ### Instructions
 1. Clone the repository:
 ```sh
-git clone git@github.com:GreenpantsDeveloper/Picosa.git && cd picosa
+git clone https://github.com/GreenpantsDeveloper/Picosa.git && cd Picosa
 ```
 
 2. **Read `picosa.sh` and the `Dockerfile` before you run it**, or share the contents with your newly downloaded Ollama model and ask about it, in case you're unsure what it does (you can soon ask your agent about it, too :-).
@@ -79,38 +83,6 @@ If you close the container, `picosa` will clean up. Restarting `picosa` will giv
 Remember to `git commit` changes you wouldn't want to lose, since there is no undo-button. Although you can always ask your agent nicely to undo its last change, as long as you keep the conversation open.
 
 If you'd like to configure `picosa` differently, feel free to adjust the `config/` files in this repository on your local machine. Note that `APPEND_SYSTEM.md` is the set of instructions that is automatically appended to the `pi` agent's own system prompt. It needs to know it is sandboxed, otherwise it will keep trying to make external requests and fail.
-
-## Architecture
-Here's how you could view the architecture of `picosa`. Note that Ollama could be hosted on your machine as shown, or it could be running on a different machine on your LAN (not visualized).
-
-```
-┌───────────────────────────────────────────────────┐
-│                  Your machine                     │
-│                                                   │
-│  ┌──────────────────┐    ┌───────────────────────┐│
-│  │ Target Repo      │    │  Ollama (LAN/Local)   ││
-│  │ /path/to/project │    │  :11434               ││
-│  └───────┬──────────┘    └──────────▲────────────┘│
-│          │                          │             │
-│          │ Docker bind-mount        │ HTTP/REST   │
-│          ▼                          │             │
-│  ┌──────────────────────────────────────────────┐ │
-│  │         Docker Container (picosa)            │ │
-│  │                                              │ │
-│  │  ┌────────────────────────────────────┐      │ │
-│  │  │  pi-coding-agent                   │      │ │
-│  │  │  ├── pi-sandbox extension          │      │ │
-│  │  │  ├── ollama support                │      │ │
-│  │  │  └── skills / extensions           │      │ │
-│  │  └────────────────────────────────────┘      │ │
-│  │                                              │ │
-│  │  ┌────────────────────────────────────┐      │ │
-│  │  │  iptables (if --private)           │      │ │
-│  │  │  └── DROP all external, accept LAN │      │ │
-│  │  └────────────────────────────────────┘      │ │
-│  └──────────────────────────────────────────────┘ │
-└───────────────────────────────────────────────────┘
-```
 
 ---
 
