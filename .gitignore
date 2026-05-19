@@ -55,3 +55,6 @@ ehdaemon/
 tmp/
 temp/
 *.tmp
+
+# Custom skills
+skills/
