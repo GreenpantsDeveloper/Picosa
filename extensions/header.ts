@@ -6,25 +6,24 @@ export default function (pi: ExtensionAPI) {
     if (ctx.hasUI) {
       ctx.ui.setHeader((_tui, theme) => ({
         render(_width: number): string[] {
+          const mode = process.env.PRIVATE_MODE;
+          const color = mode === "1" ? "accent" : "warning";
+          const cwd = process.cwd();
+          const dir = cwd.split(/[/\\]/).pop() || cwd;
+          const modeLine =
+            color === "accent"
+              ? theme.fg("accent", "🔒 Offline mode") +
+                theme.fg("muted", " — firewall active & iptables binaries removed")
+              : theme.fg("warning", "🌐 Online mode") +
+                theme.fg("muted", " — sandbox-restricted network access allowed");
+          const scopeLine = theme.fg("muted", "Scope: ") + theme.fg("accent", `${dir}/`);
           return [
             theme.bold(theme.fg("warning", "Welcome to Picosa 🌶️")),
             theme.fg("success", "Your AI coding assistant ") +
               theme.fg("muted", `(pi ${VERSION})`),
             "",
-            (() => {
-              const mode = process.env.PRIVATE_MODE;
-              if (mode === "1") {
-                return (
-                  theme.fg("accent", "🔒 Offline mode") +
-                  theme.fg("muted", " — firewall active & iptables binaries removed")
-                );
-              } else {
-                return (
-                  theme.fg("warning", "🌐 Online mode") +
-                  theme.fg("muted", " — sandbox-restricted network access allowed")
-                );
-              }
-            })(),
+            modeLine,
+            scopeLine,
             "",
             theme.fg("muted", "You could:"),
             theme.fg("muted", "- ask me what I can do for you;"),
